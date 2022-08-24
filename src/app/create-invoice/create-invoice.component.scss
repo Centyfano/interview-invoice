@@ -1,0 +1,80 @@
+.form-fields {
+  width: 60%;
+  padding: 1rem;
+  transform: translate(30%, 0%);
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 880px) {
+    width: 100%;
+    transform: translate(0, 0);
+  }
+}
+.form-fields-invoice {
+  width: 60%;
+  padding: 1rem;
+  transform: translate(30%, 10%);
+  .dates {
+    display: flex;
+    justify-content: space-between;
+
+    mat-form-field {
+      width: 45%;
+    }
+  }
+  mat-card {
+    margin: 2rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .qtyAmt {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    mat-form-field {
+      width: 45%;
+    }
+  }
+
+  @media only screen and (max-width: 880px) {
+    width: 100%;
+    transform: translate(0, 0);
+
+    mat-card {
+      margin: 1rem;
+      margin-left: 0;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nextButton {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.nextPrevButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buyerSummary {
+  display: flex;
+  // justify-content: space-around;
+
+  .buyer,
+  .invoice {
+    width: 45%;
+    margin: 1rem;
+  }
+}

@@ -1,0 +1,243 @@
+<mat-stepper
+  linear="true"
+  #stepper
+  [orientation]="(stepperOrientation | async)!"
+>
+  <mat-step [stepControl]="sellerDetails">
+    <form [formGroup]="sellerDetails">
+      <ng-template matStepLabel>Your Details</ng-template>
+      <h2 class="mat-h2">Seller Details</h2>
+
+      <div class="form-fields">
+        <!-- Name -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            placeholder="Last name, First name"
+            formControlName="name"
+          />
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Address" formControlName="address" />
+        </mat-form-field>
+
+        <!-- Phone -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Phone</mat-label>
+          <input matInput placeholder="Phone" formControlName="phone" />
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" formControlName="email" />
+        </mat-form-field>
+      </div>
+      <div class="nextButton">
+        <button mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_right_alt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="buyerDetails" label="Buyer's Details">
+    <form [formGroup]="buyerDetails">
+      <ng-template matStepLabel>Buyer's Details</ng-template>
+      <h2 class="mat-h2">Buyer Details</h2>
+
+      <div class="form-fields">
+        <!-- Name -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            placeholder="Last name, First name"
+            formControlName="name"
+          />
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Address" formControlName="address" />
+        </mat-form-field>
+
+        <!-- Phone -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Phone</mat-label>
+          <input matInput placeholder="Phone" formControlName="phone" />
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="nextPrevButtons">
+        <button mat-button matStepperPrevious>
+          <mat-icon>keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_right_alt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Invoice details -->
+  <mat-step [stepControl]="invoiceDetails" label="Invoice Details">
+    <form [formGroup]="invoiceDetails">
+      <ng-template matStepLabel>Invoice Details</ng-template>
+      <h2 class="mat-h2">Invoice Details</h2>
+
+      <div class="form-fields-invoice">
+        <div class="dates">
+          <!-- Date -->
+          <mat-form-field appearance="legacy">
+            <mat-label>Invoice Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="datePicker"
+              formControlName="date"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="datePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Payment Due -->
+          <mat-form-field appearance="legacy">
+            <mat-label>Payment Due Date</mat-label>
+            <input
+              matInput
+              matInput
+              [matDatepicker]="duePicker"
+              formControlName="paymentDue"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="duePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #duePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!-- Items -->
+        <div formArrayName="items">
+          <p class="mat-h3">Invoice Items</p>
+          <mat-card *ngFor="let item of items.controls; let i = index">
+            <mat-card-content [formGroupName]="i" class="addItemContainer">
+              <div class="header">
+                <span>Amount</span>
+                <button
+                  matTooltip="Delete this Item"
+                  matTooltipPosition="left"
+                  mat-mini-fab
+                  color="warn"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <mat-form-field class="" appearance="legacy">
+                <mat-label>Item Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Item Name"
+                  formControlName="itemName"
+                />
+              </mat-form-field>
+
+              <div class="qtyAmt">
+                <mat-form-field class="" appearance="outline">
+                  <mat-label>Quantity</mat-label>
+                  <input
+                    matInput
+                    placeholder="Quantity"
+                    formControlName="quantity"
+                  />
+                </mat-form-field>
+
+                <mat-form-field class="" appearance="outline">
+                  <mat-label>Price per Unit</mat-label>
+                  <input
+                    matInput
+                    placeholder="Price per Unit"
+                    formControlName="pricePerUnit"
+                  />
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <button mat-button (click)="addItem()">Add Item</button>
+        </div>
+        <div class="qtyAmt">
+          <mat-form-field class="" appearance="outline">
+            <mat-label>Tax (%)</mat-label>
+            <input matInput placeholder="Tax" formControlName="tax" />
+          </mat-form-field>
+
+          <mat-form-field class="" appearance="outline">
+            <mat-label>Fees/Discount</mat-label>
+            <input matInput placeholder="Discount" formControlName="discount" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="nextPrevButtons">
+        <button mat-button matStepperPrevious>
+          <mat-icon>keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button (click)="showForm()" mat-button matStepperNext>
+          Next
+          <mat-icon>arrow_right_alt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Summary</ng-template>
+    <div *ngIf="fullDetails">
+      <h2 class="mat-h2">Invoice Summary</h2>
+      <div class="sellerSummary">
+        <p>{{ fullDetails.seller.name }}</p>
+        <p>{{ fullDetails.seller.address }}</p>
+        <p>{{ fullDetails.seller.phone }}</p>
+        <p>{{ fullDetails.seller.email }}</p>
+      </div>
+      <div class="buyerSummary">
+        <div class="buyer">
+          <h2 class="mat-h3">Bill to:</h2>
+          <p>{{ fullDetails.buyer.name }}</p>
+          <p>{{ fullDetails.buyer.address }}</p>
+          <p>{{ fullDetails.buyer.phone }}</p>
+          <p>{{ fullDetails.buyer.email }}</p>
+        </div>
+        <div class="invoice">
+          <p><b>Invoice number: </b>{{ fullDetails.invoice.number }}</p>
+          <p><b>Invoice date: </b>{{ fullDetails.invoice.date | date }}</p>
+          <p><b>Payment due: </b>{{ fullDetails.invoice.paymentDue | date }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nextPrevButtons">
+      <button mat-button matStepperPrevious>
+        <mat-icon>keyboard_backspace</mat-icon>
+        Back
+      </button>
+      <button mat-button (click)="('kl')">Print Invoice</button>
+    </div>
+  </mat-step>
+</mat-stepper>
