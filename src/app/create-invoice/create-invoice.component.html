@@ -141,6 +141,7 @@
               <div class="header">
                 <span>Amount</span>
                 <button
+                  (click)="removeItem(i)"
                   matTooltip="Delete this Item"
                   matTooltipPosition="left"
                   mat-mini-fab
@@ -165,6 +166,7 @@
                     matInput
                     placeholder="Quantity"
                     formControlName="quantity"
+                    type="number"
                   />
                 </mat-form-field>
 
@@ -174,6 +176,7 @@
                     matInput
                     placeholder="Price per Unit"
                     formControlName="pricePerUnit"
+                    type="number"
                   />
                 </mat-form-field>
               </div>
@@ -218,16 +221,87 @@
       </div>
       <div class="buyerSummary">
         <div class="buyer">
-          <h2 class="mat-h3">Bill to:</h2>
+          <h2 class="mat-subheading-2">Bill to:</h2>
           <p>{{ fullDetails.buyer.name }}</p>
           <p>{{ fullDetails.buyer.address }}</p>
           <p>{{ fullDetails.buyer.phone }}</p>
           <p>{{ fullDetails.buyer.email }}</p>
         </div>
         <div class="invoice">
-          <p><b>Invoice number: </b>{{ fullDetails.invoice.number }}</p>
-          <p><b>Invoice date: </b>{{ fullDetails.invoice.date | date }}</p>
-          <p><b>Payment due: </b>{{ fullDetails.invoice.paymentDue | date }}</p>
+          <span></span>
+          <p></p>
+          <p>
+            <b class="mat-body-2">Invoice number: </b
+            >{{ fullDetails.invoice.number }}
+          </p>
+          <p>
+            <b class="mat-body-2">Invoice date: </b
+            >{{ fullDetails.invoice.date | date }}
+          </p>
+          <p>
+            <b class="mat-body-2">Payment due: </b
+            >{{ fullDetails.invoice.paymentDue | date }}
+          </p>
+        </div>
+      </div>
+      <div class="tableContainer">
+        <table
+          mat-table
+          [dataSource]="fullDetails.invoice.items"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="item">
+            <th class="itName" mat-header-cell *matHeaderCellDef>Item</th>
+            <td class="itName" mat-cell *matCellDef="let element">
+              {{ element.itemName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="pricePerUnit">
+            <th mat-header-cell *matHeaderCellDef>Price per unit</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.pricePerUnit }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalItem }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
+        </table>
+        <div class="deductions">
+          <div class="container">
+            <div>
+              <span><b>Subtotal</b></span>
+              <span> {{ fullDetails.amount }} </span>
+            </div>
+            <div>
+              <span
+                ><b>Tax {{ fullDetails.invoice.tax }}%</b></span
+              >
+              <span>
+                {{
+                  (
+                    (fullDetails.invoice.tax / 100) *
+                    fullDetails.amount
+                  ).toFixed(2)
+                }}
+              </span>
+            </div>
+
+            <div>
+              <span><b>Fees/discounts</b></span>
+              <span> {{ fullDetails.invoice.discount }} </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

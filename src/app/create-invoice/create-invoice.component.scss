@@ -78,3 +78,31 @@
     margin: 1rem;
   }
 }
+.tableContainer {
+  padding: 1rem;
+  margin: 1rem;
+  table {
+    width: 100%;
+    margin: 1rem;
+
+    .itName {
+      width: 50%;
+    }
+  }
+  .deductions {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 1rem;
+
+    .container {
+      width: 30%;
+
+      div {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+      }
+    }
+  }
+}

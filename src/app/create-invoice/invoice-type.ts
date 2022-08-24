@@ -14,6 +14,7 @@ interface InvoiceItem {
   itemName: string;
   quantity: number;
   pricePerUnit: number;
+  totalItem: number;
 }
 interface Invoice {
   number: number;
@@ -26,4 +27,5 @@ export interface InvoiceType {
   buyer: Buyer;
   seller: Seller;
   invoice: Invoice;
+  amount: number;
 }
