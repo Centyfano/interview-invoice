@@ -88,6 +88,9 @@ mat-stepper {
 
 .seller {
   margin: 2rem;
+  .sellerSummary {
+    margin: 2rem;
+  }
 }
 
 .customerSummary {
@@ -114,7 +117,7 @@ mat-stepper {
     flex-direction: row-reverse;
 
     .container {
-      width: 30%;
+      width: 37%;
       margin: 1rem;
 
       div {
@@ -123,7 +126,7 @@ mat-stepper {
         padding: 0.5rem 0;
 
         .header {
-          width: 60%;
+          width: 50%;
         }
       }
 
