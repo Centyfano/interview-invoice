@@ -1,4 +1,4 @@
-interface Buyer {
+interface Customer {
   name: string;
   address: string;
   phone: string;
@@ -24,7 +24,7 @@ interface Invoice {
 }
 
 export interface InvoiceType {
-  buyer: Buyer;
+  customer: Customer;
   seller: Seller;
   invoice: Invoice;
   amount: number;

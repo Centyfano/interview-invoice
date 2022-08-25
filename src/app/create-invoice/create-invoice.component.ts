@@ -28,32 +28,33 @@ export class CreateInvoiceComponent implements OnInit {
   stepperOrientation!: Observable<StepperOrientation>;
   fullDetails: InvoiceType | any;
   invoiceColumns = ['item', 'quantity', 'pricePerUnit', 'amount'];
+  finalForm = false;
 
   sellerDetails = this.fb.nonNullable.group({
-    name: ['seller name', Validators.required],
-    address: ['seller addr', Validators.required],
-    phone: ['seller phone', Validators.required],
-    email: ['seller email', Validators.required],
+    name: ['Nancy Drew', Validators.required],
+    address: ['Kentucky St.', Validators.required],
+    phone: ['0324545329', Validators.required],
+    email: ['drew@seller.com', Validators.required],
   });
 
-  buyerDetails = this.fb.nonNullable.group({
-    name: ['buyer', Validators.required],
-    address: ['buyer addr', Validators.required],
-    phone: ['buyer phone', Validators.required],
-    email: ['buyer email', Validators.required],
+  customerDetails = this.fb.nonNullable.group({
+    name: ['Peter Smith', Validators.required],
+    address: ['141 Woodland Av.', Validators.required],
+    phone: ['0203445667', Validators.required],
+    email: ['smith@customer.com', Validators.required],
   });
 
   invoiceDetails = this.fb.nonNullable.group({
     number: [0, Validators.required],
     date: ['8/25/2022', Validators.required],
     paymentDue: ['8/25/2022', Validators.required],
-    tax: [12, Validators.required],
+    tax: [1, Validators.required],
     discount: [14, Validators.required],
     items: this.fb.array([
       this.fb.nonNullable.group({
-        itemName: ['Nme', Validators.required],
-        quantity: [10, Validators.required],
-        pricePerUnit: [20, Validators.required],
+        itemName: ['Wireless Mouse', Validators.required],
+        quantity: [5, Validators.required],
+        pricePerUnit: [25, Validators.required],
         totalItem: [0, Validators.required],
       }),
     ]),
@@ -88,8 +89,9 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   showForm() {
+    this.finalForm = false;
     const det: InvoiceType = {
-      buyer: this.buyerDetails.getRawValue(),
+      customer: this.customerDetails.getRawValue(),
       seller: this.sellerDetails.getRawValue(),
       invoice: this.invoiceDetails.getRawValue(),
       amount: 0,
@@ -105,7 +107,8 @@ export class CreateInvoiceComponent implements OnInit {
     this.fullDetails.invoice!.number = +Math.random().toFixed(6) * 10e6;
     this.fullDetails.amount = this.getAmount(det.invoice.items);
 
-    console.log(this.fullDetails);
+    // console.log(this.fullDetails);
+    this.finalForm = true;
   }
 
   ngOnInit(): void {}

@@ -90,11 +90,11 @@ mat-stepper {
   margin: 2rem;
 }
 
-.buyerSummary {
+.customerSummary {
   display: flex;
-  // justify-content: space-around;
+  margin: 2rem;
 
-  .buyer,
+  .customer,
   .invoice {
     width: 45%;
     margin: 2rem;
@@ -120,8 +120,11 @@ mat-stepper {
       div {
         width: 100%;
         display: flex;
-        justify-content: space-between;
         padding: 0.5rem 0;
+
+        .header {
+          width: 60%;
+        }
       }
 
       @media only screen and(max-width:880px) {
