@@ -1,3 +1,10 @@
+mat-stepper {
+  background-color: rgba($color: #000000, $alpha: 0.1);
+}
+.form-fields,
+.form-fields-invoice {
+  background-color: white;
+}
 .form-fields {
   width: 60%;
   padding: 1rem;
@@ -8,14 +15,14 @@
   }
 
   @media only screen and (max-width: 880px) {
-    width: 100%;
+    width: 95%;
     transform: translate(0, 0);
   }
 }
 .form-fields-invoice {
   width: 60%;
   padding: 1rem;
-  transform: translate(30%, 10%);
+  transform: translate(30%, 0%);
   .dates {
     display: flex;
     justify-content: space-between;
@@ -32,6 +39,13 @@
     width: 100%;
   }
 
+  .add-button {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0.5rem;
+    margin: 0.5rem;
+  }
+
   .qtyAmt {
     width: 100%;
     display: flex;
@@ -45,6 +59,7 @@
   @media only screen and (max-width: 880px) {
     width: 100%;
     transform: translate(0, 0);
+    width: 95%;
 
     mat-card {
       margin: 1rem;
@@ -58,14 +73,21 @@
   justify-content: space-between;
 }
 
-.nextButton {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
+.nextButton,
 .nextPrevButtons {
   display: flex;
   justify-content: space-between;
+  width: 60%;
+  padding: 1rem;
+  transform: translate(30%, 0%);
+  margin-top: 2rem;
+}
+.nextButton {
+  flex-direction: row-reverse;
+}
+
+.seller {
+  margin: 2rem;
 }
 
 .buyerSummary {
@@ -75,15 +97,13 @@
   .buyer,
   .invoice {
     width: 45%;
-    margin: 1rem;
+    margin: 2rem;
   }
 }
 .tableContainer {
-  padding: 1rem;
-  margin: 1rem;
+  margin: 2rem;
   table {
     width: 100%;
-    margin: 1rem;
 
     .itName {
       width: 50%;
@@ -92,16 +112,20 @@
   .deductions {
     display: flex;
     flex-direction: row-reverse;
-    margin: 1rem;
 
     .container {
       width: 30%;
+      margin: 1rem;
 
       div {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem;
+        padding: 0.5rem 0;
+      }
+
+      @media only screen and(max-width:880px) {
+        width: 100%;
       }
     }
   }

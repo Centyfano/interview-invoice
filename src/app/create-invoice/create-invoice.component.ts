@@ -30,31 +30,31 @@ export class CreateInvoiceComponent implements OnInit {
   invoiceColumns = ['item', 'quantity', 'pricePerUnit', 'amount'];
 
   sellerDetails = this.fb.nonNullable.group({
-    name: ['seller name'],
-    address: ['seller addr'],
-    phone: ['seller phone'],
-    email: ['seller email'],
+    name: ['seller name', Validators.required],
+    address: ['seller addr', Validators.required],
+    phone: ['seller phone', Validators.required],
+    email: ['seller email', Validators.required],
   });
 
   buyerDetails = this.fb.nonNullable.group({
-    name: ['buyer name'],
-    address: ['buyer addr'],
-    phone: ['buyer phone'],
-    email: ['buyer email'],
+    name: ['buyer', Validators.required],
+    address: ['buyer addr', Validators.required],
+    phone: ['buyer phone', Validators.required],
+    email: ['buyer email', Validators.required],
   });
 
   invoiceDetails = this.fb.nonNullable.group({
-    number: [0],
-    date: ['8/25/2022'],
-    paymentDue: ['8/25/2022'],
-    tax: [12],
-    discount: [14],
+    number: [0, Validators.required],
+    date: ['8/25/2022', Validators.required],
+    paymentDue: ['8/25/2022', Validators.required],
+    tax: [12, Validators.required],
+    discount: [14, Validators.required],
     items: this.fb.array([
       this.fb.nonNullable.group({
-        itemName: ['Nme'],
-        quantity: [10],
-        pricePerUnit: [20],
-        totalItem: [0],
+        itemName: ['Nme', Validators.required],
+        quantity: [10, Validators.required],
+        pricePerUnit: [20, Validators.required],
+        totalItem: [0, Validators.required],
       }),
     ]),
   });
@@ -65,9 +65,9 @@ export class CreateInvoiceComponent implements OnInit {
 
   newItem() {
     return this.fb.nonNullable.group({
-      itemName: [''],
-      quantity: [''],
-      pricePerUnit: [''],
+      itemName: ['', Validators.required],
+      quantity: ['', Validators.required],
+      pricePerUnit: ['', Validators.required],
     });
   }
 

@@ -16,11 +16,11 @@ import { MatTableModule } from '@angular/material/table';
 import { AppComponent } from './app.component';
 import { CreateInvoiceComponent } from './create-invoice/create-invoice.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { GenPdfComponent } from './create-invoice/gen-pdf/gen-pdf.component';
 
 @NgModule({
-  declarations: [AppComponent, CreateInvoiceComponent, DynamicFormComponent],
+  declarations: [AppComponent, CreateInvoiceComponent, GenPdfComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

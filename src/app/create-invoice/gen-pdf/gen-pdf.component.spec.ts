@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynamicFormComponent } from './dynamic-form.component';
+import { GenPdfComponent } from './gen-pdf.component';
 
-describe('DynamicFormComponent', () => {
-  let component: DynamicFormComponent;
-  let fixture: ComponentFixture<DynamicFormComponent>;
+describe('GenPdfComponent', () => {
+  let component: GenPdfComponent;
+  let fixture: ComponentFixture<GenPdfComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DynamicFormComponent ]
+      declarations: [ GenPdfComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DynamicFormComponent);
+    fixture = TestBed.createComponent(GenPdfComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
