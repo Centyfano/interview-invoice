@@ -27,3 +27,5 @@ If buyer's name is Andrew Jones and phone number 536-421-7286,
 
 - user password is `jones-86`
 - owner's password is `owner-jones-86`
+
+> All the passwords are in lowercase
