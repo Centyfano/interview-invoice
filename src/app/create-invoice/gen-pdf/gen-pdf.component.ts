@@ -15,7 +15,28 @@ export class GenPdfComponent implements OnInit {
   constructor() {}
   options = { year: 'numeric', month: 'numeric', day: 'numeric' };
   generatePDF(action = 'open') {
+    const name = this.invoice.customer.name.toLowerCase().split(' ');
+    const pdfname = `${name[0]}${this.invoice.invoice.number}`;
+    const phone = this.invoice.customer.phone;
+    const password = `${name[name.length - 1]}-${phone.slice(-2)}`;
     let docDefinition: any = {
+      userPassword: password,
+      ownerPassword: `owner-${password}`,
+      permissions: {
+        printing: 'highResolution', //'lowResolution'
+        modifying: false,
+        copying: false,
+        annotating: true,
+        fillingForms: true,
+        contentAccessibility: true,
+        documentAssembly: true,
+      },
+      info: {
+        title: pdfname,
+        author: this.invoice.seller.name,
+        subject: 'Invoice',
+        // keywords: 'keywords for document',
+      },
       content: [
         {
           text: 'INVOICE',
@@ -36,7 +57,7 @@ export class GenPdfComponent implements OnInit {
               { text: this.invoice.customer.name, margin: [0, 2] },
               { text: this.invoice.customer.address, margin: [0, 2] },
               { text: this.invoice.customer.email, margin: [0, 2] },
-              { text: this.invoice.customer.phone, margin: [0, 2] },
+              { text: this.invoice.customer.phone, margin: [0, 2, 0, 20] },
             ],
             [
               {
@@ -81,112 +102,151 @@ export class GenPdfComponent implements OnInit {
             ],
           ],
         },
-        {
-          text: 'Order Details',
-          style: 'sectionHeader',
-          margin: [0, 10],
-        },
 
         {
-          layout: 'lightHorizontalLines',
           table: {
             headerRows: 1,
-            margin: [0, 10],
+            margin: [20, 20, 20, 20],
             widths: ['*', 'auto', 'auto', 'auto'],
             body: [
-              ['Item', 'Price per unit', 'Quantity', 'Amount'],
-              ...this.invoice.invoice.items.map((p: any) => [
-                p.itemName,
-                '$' + p.pricePerUnit.toFixed(2),
-                p.quantity,
-                '$' + p.totalItem.toFixed(2),
-              ]),
-            ],
-          },
-        },
-        {
-          layout: 'noBorders',
-          table: {
-            // headerRows: 1,
-            margin: [0, 10],
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: [
-              // ['Product', 'Price per unit', 'Quantity', 'Amount'],
-
               [
-                { text: null, colSpan: 2 },
-                {},
-                { text: 'Subtotal', alignment: 'center', bold: true },
-                { text: '$' + this.invoice.amount.toFixed(2) },
+                {
+                  text: 'Item',
+                  border: [false, true, false, true],
+                  fillColor: '#fbe7d4',
+                  bold: true,
+                  margin: [0, 5, 0, 5],
+                },
+
+                {
+                  text: 'Quantity',
+                  border: [false, true, false, true],
+                  fillColor: '#fbe7d4',
+                  bold: true,
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: 'Price per unit',
+                  border: [false, true, false, true],
+                  fillColor: '#fbe7d4',
+                  bold: true,
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: 'Amount',
+                  border: [false, true, false, true],
+                  fillColor: '#fbe7d4',
+                  bold: true,
+                  margin: [0, 5, 0, 5],
+                },
+              ],
+              ...this.invoice.invoice.items.map((p: any) => [
+                {
+                  text: p.itemName,
+                  border: [false, true, false, true],
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: p.quantity,
+                  border: [false, true, false, true],
+                  alignment: 'center',
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: '$' + p.pricePerUnit.toFixed(2),
+                  border: [false, true, false, true],
+                  alignment: 'center',
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: '$' + p.totalItem.toFixed(2),
+                  border: [false, true, false, true],
+                  alignment: 'center',
+                  margin: [0, 5, 0, 5],
+                },
+              ]),
+              [
+                { text: '', colSpan: 2, border: [false, false, false, false] },
+                { text: '', border: [false, false, false, false] },
+                {
+                  text: 'Subtotal',
+                  alignment: 'center',
+                  bold: true,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: '$' + this.invoice.amount.toFixed(2),
+                  alignment: 'center',
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
               ],
               [
-                { text: null, colSpan: 2 },
-                {},
+                {
+                  text: '',
+                  colSpan: 2,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: '',
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
                 {
                   text: `Tax ${this.invoice.invoice.tax}%`,
                   alignment: 'center',
                   bold: true,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
                 {
                   text: `$${(
                     (this.invoice.invoice.tax / 100) *
                     this.invoice.amount
                   ).toFixed(2)}`,
+                  alignment: 'center',
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
               ],
               [
-                { text: null, colSpan: 2 },
-                {},
+                { text: '', colSpan: 2, border: [false, false, false, false] },
+                { text: '', border: [false, false, false, false] },
                 {
                   text: `Fees/Discounts`,
                   alignment: 'center',
                   bold: true,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
                 {
                   text: '$' + this.invoice.invoice.discount.toFixed(2),
+                  alignment: 'center',
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
               ],
-            ],
-          },
-        },
-        {
-          layout: {
-            hLineWidth: function (i: number, node: Node) {
-              return i === 0 || i === node.table?.body.length ? 1 : 1;
-            },
-            vLineWidth: function (i: number, node: Node) {
-              return i === 0 || i === node.table?.widths?.length ? 0 : 0;
-            },
-            hLineColor: function (i: number, node: Node) {
-              return i === 0 || i === node.table?.body.length
-                ? 'black'
-                : 'gray';
-            },
-            vLineColor: function (i: number, node: Node) {
-              return i === 0 || i === node.table?.widths?.length
-                ? 'black'
-                : 'gray';
-            },
-            // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // paddingLeft: function(i, node) { return 4; },
-            // paddingRight: function(i, node) { return 4; },
-            // paddingTop: function(i, node) { return 2; },
-            // paddingBottom: function(i, node) { return 2; },
-            // fillColor: function (rowIndex, node, columnIndex) { return null; }
-          },
-          table: {
-            // headerRows: 1,
-            margin: [0, 10],
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: [
               [
-                { text: null, colSpan: 2 },
-                {},
+                {
+                  text: null,
+                  colSpan: 2,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
+                {
+                  text: null,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
+                },
                 {
                   text: `TOTAL`,
                   alignment: 'center',
                   bold: true,
+                  fillColor: '#fbe7d4',
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
                 {
                   text:
@@ -196,19 +256,26 @@ export class GenPdfComponent implements OnInit {
                       (this.invoice.invoice.tax / 100) * this.invoice.amount - //tax
                       this.invoice.invoice.discount
                     ).toFixed(2), // discount
+                  fillColor: '#fbe7d4',
+                  bold: true,
+                  border: [false, false, false, false],
+                  margin: [0, 5, 0, 5],
                 },
               ],
             ],
           },
         },
+
         {
           margin: [0, 30, 0, 10],
           text: 'Terms and Conditions',
-          style: 'sectionHeader',
+          color: 'gray',
+          fontSize: 16,
         },
         {
           text: 'Terms and conditions go here',
           italics: true,
+          fontSize: 11,
         },
       ],
       styles: {
@@ -222,7 +289,7 @@ export class GenPdfComponent implements OnInit {
     };
 
     if (action === 'download') {
-      pdfMake.createPdf(docDefinition).download();
+      pdfMake.createPdf(docDefinition).download(pdfname + '.pdf');
     } else if (action === 'print') {
       pdfMake.createPdf(docDefinition).print();
     } else {
@@ -237,9 +304,7 @@ export class GenPdfComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    console.log(this.invoice);
-  }
+  ngOnInit(): void {}
 }
 
 class Invoice {

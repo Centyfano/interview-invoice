@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { InvoiceType } from './invoice-type';
 import { MatTable } from '@angular/material/table';
 
@@ -27,34 +27,36 @@ export class CreateInvoiceComponent implements OnInit {
 
   stepperOrientation!: Observable<StepperOrientation>;
   fullDetails: InvoiceType | any;
+  invDetailsChild: InvoiceType | any;
   invoiceColumns = ['item', 'quantity', 'pricePerUnit', 'amount'];
-  finalForm = false;
+  // finalForm = false;
+  finalForm = new BehaviorSubject(false);
 
   sellerDetails = this.fb.nonNullable.group({
-    name: ['Nancy Drew', Validators.required],
-    address: ['Kentucky St.', Validators.required],
-    phone: ['0324545329', Validators.required],
-    email: ['drew@seller.com', Validators.required],
+    name: ['', Validators.required],
+    address: ['', Validators.required],
+    phone: ['', Validators.required],
+    email: ['', Validators.required],
   });
 
   customerDetails = this.fb.nonNullable.group({
-    name: ['Peter Smith', Validators.required],
-    address: ['141 Woodland Av.', Validators.required],
-    phone: ['0203445667', Validators.required],
-    email: ['smith@customer.com', Validators.required],
+    name: ['', Validators.required],
+    address: ['', Validators.required],
+    phone: ['', Validators.required],
+    email: ['', Validators.required],
   });
 
   invoiceDetails = this.fb.nonNullable.group({
     number: [0, Validators.required],
-    date: ['8/25/2022', Validators.required],
-    paymentDue: ['8/25/2022', Validators.required],
-    tax: [1, Validators.required],
-    discount: [14, Validators.required],
+    date: ['', Validators.required],
+    paymentDue: ['', Validators.required],
+    tax: [0, [Validators.required, Validators.min(1)]],
+    discount: [0, [Validators.required, Validators.min(1)]],
     items: this.fb.array([
       this.fb.nonNullable.group({
-        itemName: ['Wireless Mouse', Validators.required],
-        quantity: [5, Validators.required],
-        pricePerUnit: [25, Validators.required],
+        itemName: ['', Validators.required],
+        quantity: [0, [Validators.required, Validators.min(1)]],
+        pricePerUnit: [0, [Validators.required, Validators.min(1)]],
         totalItem: [0, Validators.required],
       }),
     ]),
@@ -67,8 +69,8 @@ export class CreateInvoiceComponent implements OnInit {
   newItem() {
     return this.fb.nonNullable.group({
       itemName: ['', Validators.required],
-      quantity: ['', Validators.required],
-      pricePerUnit: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(1)]],
+      pricePerUnit: [0, [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -89,7 +91,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   showForm() {
-    this.finalForm = false;
+    this.finalForm.next(false);
     const det: InvoiceType = {
       customer: this.customerDetails.getRawValue(),
       seller: this.sellerDetails.getRawValue(),
@@ -106,9 +108,17 @@ export class CreateInvoiceComponent implements OnInit {
     this.fullDetails = { ...det };
     this.fullDetails.invoice!.number = +Math.random().toFixed(6) * 10e6;
     this.fullDetails.amount = this.getAmount(det.invoice.items);
+    this.invDetailsChild = this.fullDetails;
+    console.log(this.fullDetails);
 
-    // console.log(this.fullDetails);
-    this.finalForm = true;
+    this.finalForm.next(true);
+  }
+  clearInvoice() {
+    this.finalForm.next(false);
+    this.invDetailsChild = null;
+  }
+  checkStep(e: any) {
+    if (e.selectedIndex == 2) this.clearInvoice();
   }
 
   ngOnInit(): void {}

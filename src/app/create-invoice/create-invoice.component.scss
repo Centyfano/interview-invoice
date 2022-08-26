@@ -67,7 +67,9 @@ mat-stepper {
     }
   }
 }
-
+mat-error {
+  font-size: small;
+}
 .header {
   display: flex;
   justify-content: space-between;

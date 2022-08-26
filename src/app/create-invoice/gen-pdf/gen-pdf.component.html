@@ -1,1 +1,14 @@
-<button mat-raised-button (click)="generatePDF()">Generate</button>
+<mat-card>
+  <p>Your invoice is ready to be viewed. Click either of the buttons below</p>
+  <mat-card-content>
+    <div>
+      <button mat-raised-button (click)="generatePDF()">View PDF</button>
+      <button mat-raised-button (click)="generatePDF('download')">
+        Download PDF
+      </button>
+      <button mat-raised-button (click)="generatePDF('print')">
+        Print PDF
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

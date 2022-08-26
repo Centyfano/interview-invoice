@@ -2,6 +2,7 @@
   linear="true"
   #stepper
   [orientation]="(stepperOrientation | async)!"
+  (selectionChange)="checkStep($event)"
 >
   <mat-step [stepControl]="sellerDetails">
     <form [formGroup]="sellerDetails">
@@ -18,6 +19,14 @@
             formControlName="name"
             required
           />
+          <div
+            *ngIf="
+              sellerDetails.get('name')?.touched &&
+              sellerDetails.get('name')?.errors?.['required']
+            "
+          >
+            <mat-error> Full name is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Address -->
@@ -29,6 +38,14 @@
             formControlName="address"
             required
           />
+          <div
+            *ngIf="
+              sellerDetails.get('address')?.touched &&
+              sellerDetails.get('address')?.errors?.['required']
+            "
+          >
+            <mat-error> Address is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Phone -->
@@ -40,6 +57,14 @@
             formControlName="phone"
             required
           />
+          <div
+            *ngIf="
+              sellerDetails.get('phone')?.touched &&
+              sellerDetails.get('phone')?.errors?.['required']
+            "
+          >
+            <mat-error> Phone Number is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Email -->
@@ -51,6 +76,14 @@
             formControlName="email"
             required
           />
+          <div
+            *ngIf="
+              sellerDetails.get('email')?.touched &&
+              sellerDetails.get('email')?.errors?.['required']
+            "
+          >
+            <mat-error> Email is required. </mat-error>
+          </div>
         </mat-form-field>
       </div>
       <div class="nextButton">
@@ -71,7 +104,7 @@
 
       <div class="form-fields">
         <h1 class="mat-h1">Customer Details</h1>
-        <!-- Name -->
+        <!-- Customer Name -->
         <mat-form-field appearance="legacy">
           <mat-label>Full Name</mat-label>
           <input
@@ -80,6 +113,14 @@
             formControlName="name"
             required
           />
+          <div
+            *ngIf="
+              customerDetails.get('name')?.touched &&
+              customerDetails.get('name')?.errors?.['required']
+            "
+          >
+            <mat-error> Customer's full name is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Address -->
@@ -91,6 +132,14 @@
             formControlName="address"
             required
           />
+          <div
+            *ngIf="
+              customerDetails.get('address')?.touched &&
+              customerDetails.get('address')?.errors?.['required']
+            "
+          >
+            <mat-error> Customer's address is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Phone -->
@@ -102,6 +151,14 @@
             formControlName="phone"
             required
           />
+          <div
+            *ngIf="
+              customerDetails.get('phone')?.touched &&
+              customerDetails.get('phone')?.errors?.['required']
+            "
+          >
+            <mat-error> Customer's phone is required. </mat-error>
+          </div>
         </mat-form-field>
 
         <!-- Email -->
@@ -113,6 +170,14 @@
             formControlName="email"
             required
           />
+          <div
+            *ngIf="
+              customerDetails.get('email')?.touched &&
+              customerDetails.get('email')?.errors?.['required']
+            "
+          >
+            <mat-error> Customer's email is required. </mat-error>
+          </div>
         </mat-form-field>
       </div>
 
@@ -150,6 +215,14 @@
               formControlName="date"
               required
             />
+            <div
+              *ngIf="
+              invoiceDetails.get('date')?.touched &&
+              invoiceDetails.get('date')?.errors?.['required']
+            "
+            >
+              <mat-error> Invoice date is required. </mat-error>
+            </div>
             <mat-datepicker-toggle
               matSuffix
               [for]="datePicker"
@@ -167,6 +240,14 @@
               formControlName="paymentDue"
               required
             />
+            <div
+              *ngIf="
+              invoiceDetails.get('paymentDue')?.touched &&
+              invoiceDetails.get('paymentDue')?.errors?.['required']
+            "
+            >
+              <mat-error> Invoice payment due date is required. </mat-error>
+            </div>
             <mat-datepicker-toggle
               matSuffix
               [for]="duePicker"
@@ -245,17 +326,40 @@
         <div class="qtyAmt">
           <mat-form-field class="" appearance="outline">
             <mat-label>Tax (%)</mat-label>
-            <input matInput placeholder="Tax" formControlName="tax" required />
+            <input
+              type="number"
+              matInput
+              placeholder="Tax"
+              formControlName="tax"
+              required
+            />
+            <div
+              *ngIf="
+              invoiceDetails.get('tax')?.touched &&
+              invoiceDetails.get('tax')?.errors?.['required']
+            "
+            >
+              <mat-error> Tax percentage is required. </mat-error>
+            </div>
           </mat-form-field>
 
           <mat-form-field class="" appearance="outline">
             <mat-label>Fees/Discount</mat-label>
             <input
+              type="number"
               matInput
               placeholder="Discount"
               formControlName="discount"
               required
             />
+            <div
+              *ngIf="
+              invoiceDetails.get('discount')?.touched &&
+              invoiceDetails.get('discount')?.errors?.['required']
+            "
+            >
+              <mat-error> Discount amount is required. </mat-error>
+            </div>
           </mat-form-field>
         </div>
       </div>
@@ -394,7 +498,7 @@
     </div>
 
     <div class="nextPrevButtons">
-      <button mat-raised-button matStepperPrevious>
+      <button mat-raised-button matStepperPrevious (click)="clearInvoice()">
         <mat-icon>keyboard_backspace</mat-icon>
         Back
       </button>
@@ -405,8 +509,8 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>PDF</ng-template>
-    <div *ngIf="finalForm">
-      <app-gen-pdf [invoice]="fullDetails"></app-gen-pdf>
+    <div *ngIf="finalForm | async">
+      <app-gen-pdf [invoice]="invDetailsChild"></app-gen-pdf>
     </div>
   </mat-step>
 </mat-stepper>
